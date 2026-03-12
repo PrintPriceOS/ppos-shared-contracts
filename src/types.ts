@@ -1,25 +1,27 @@
-export enum GlobalJobState {
-    INGESTED = 'INGESTED',
-    PREFLIGHTING = 'PREFLIGHTING',
-    PRICING = 'PRICING',
-    MATCHMAKING = 'MATCHMAKING',
-    DISPATCHED = 'DISPATCHED',
-    NODE_ACCEPTED = 'NODE_ACCEPTED',
-    IN_PRODUCTION = 'IN_PRODUCTION',
-    SHIPPED = 'SHIPPED',
-    FAILED = 'FAILED',
-    REFUNDED = 'REFUNDED'
+// ppos-shared-contracts/src/types.ts
+
+export type JobStatus = 'PENDING' | 'PREFLIGHTING' | 'READY_FOR_PRICING' | 'PRICING' | 'OFFERED' | 'ASSIGNED' | 'CANCELLED' | 'ERROR';
+
+export interface GlobalJobSpecs {
+    format: string;
+    pageCount: number;
+    colorMode: 'CMYK' | 'GRAYSCALE' | 'SPECIAL';
+    binding: string;
+    paperWeight?: string;
 }
 
-export interface JobSpecs {
-    format?: string;
-    binding?: string;
-    target_country?: string;
-    [key: string]: any;
+export interface GlobalJobState {
+    jobId: string;
+    traceId: string;
+    status: JobStatus;
+    specs?: GlobalJobSpecs;
+    admittedAt: string;
+    updatedAt: string;
 }
 
-export interface JobFindings {
-    specs: JobSpecs;
-    technical_errors?: any[];
-    warnings?: any[];
+export interface NodeCapability {
+    nodeId: string;
+    tier: 'PREMIER' | 'CERTIFIED' | 'SANDBOX';
+    supportedFormats: string[];
+    maxPageCount: number;
 }
